@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +50,7 @@ fun SongScreen() {
         topBar = { SongTopBar() },
         bottomBar = { SongBottomBar(snackbar) },
         snackbarHost = { SnackbarHost(snackbar) },
-        floatingActionButton = {},
+        floatingActionButton = { SongFab(snackbar) },
     ) {
         Column(
             Modifier
@@ -115,6 +118,9 @@ fun SongBottomBar(snackbar: SnackbarHostState) {
         leadingIcon = {
             IconButton(
                 onClick = {
+                    if (searchText.isEmpty())
+                        return@IconButton
+
                     scope.launch {
                         snackbar.showSnackbar("노래 $searchText 검색")
                     }
@@ -137,6 +143,24 @@ fun SongBottomBar(snackbar: SnackbarHostState) {
             .fillMaxWidth()
             .heightIn(min = 56.dp)
     )
+}
+
+@Composable
+fun SongFab(snackbar: SnackbarHostState) {
+    val scope = rememberCoroutineScope()
+    FloatingActionButton(
+        onClick = {
+            scope.launch {
+                snackbar.showSnackbar("노래 추가")
+            }
+        },
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Icon(
+            Icons.Filled.Add,
+            "추가 아이콘"
+        )
+    }
 }
 
 @Preview(showBackground = true)
