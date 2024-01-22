@@ -6,18 +6,27 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,7 +37,7 @@ import kr.ac.kumoh.ce.prof01.jet12scaffold.ui.theme.Jet12ScaffoldTheme
 fun SongScreen() {
     Scaffold(
         topBar = { SongTopBar() },
-        bottomBar = {},
+        bottomBar = { SongBottomBar() },
         snackbarHost = {},
         floatingActionButton = {},
     ) {
@@ -80,6 +89,39 @@ fun SongTopBar() {
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             titleContentColor = MaterialTheme.colorScheme.secondary,
         )
+    )
+}
+
+@Composable
+fun SongBottomBar() {
+    var searchText by rememberSaveable {
+        mutableStateOf("")
+    }
+    TextField(
+        value = searchText,
+        onValueChange = {
+            searchText = it
+        },
+        leadingIcon = {
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    Icons.Default.Search,
+                    "검색 아이콘"
+                )
+            }
+        },
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),
+        placeholder = {
+            Text("제목 검색")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
     )
 }
 
